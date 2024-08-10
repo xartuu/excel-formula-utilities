@@ -1,61 +1,218 @@
-# vite-vanilla-ts-lib-starter
+# excel-formula-utilities
 
-The starter is built on top of Vite 5.x and prepared for writing libraries in TypeScript. It generates a package with support for ESM modules and IIFE.
+This project is a port of the [excel-formula](https://github.com/joshbtn/excelFormulaUtilitiesJS) library to ES6 without any dependencies.  
+It's a library that can be used to pretty print excel formulas or convert excel formulas into JavaScript, C# or Python code.
 
-## Features
-
-- ESM modules
-- IIFE bundle for direct browser support without bundler
-- Typings bundle
-- ESLint - scripts linter
-- Stylelint - styles linter
-- Prettier - formatter
-- Vitest - test framework
-- Husky + lint-staged - pre-commit git hook set up for formatting
-
-## GitHub Template
-
-This is a template repo. Click the green [Use this template](https://github.com/kbysiec/vite-vanilla-ts-lib-starter/generate) button to get started.
-
-## Clone to local
-
-If you prefer to do it manually with the cleaner git history
+## Install
 
 ```bash
-git clone https://github.com/kbysiec/vite-vanilla-ts-lib-starter.git
-cd vite-vanilla-ts-lib-starter
-npm i
+npm install excel-formula-utilities
 ```
-
-## Checklist
-
-When you use this template, update the following:
-
-- Remove `.git` directory and run `git init` to clean up the history
-- Change the name in `package.json` - it will be the name of the IIFE bundle global variable and bundle files name (`.cjs`, `.mjs`, `.iife.js`, `d.ts`)
-- Change the author name in `LICENSE`
-- Clean up the `README` and `CHANGELOG` files
-
-And, enjoy :)
 
 ## Usage
 
-The starter contains the following scripts:
+```javascript
+import { formatFormula } from 'excel-formula-utilities'
 
-- `dev` - starts dev server
-- `build` - generates the following bundles: ESM (`.js`) and IIFE (`.iife.js`). The name of bundle is automatically taken from `package.json` name property
-- `test` - starts vitest and runs all tests
-- `test:coverage` - starts vitest and run all tests with code coverage report
-- `lint:scripts` - lint `.ts` files with eslint
-- `lint:styles` - lint `.css` and `.scss` files with stylelint
-- `format:scripts` - format `.ts`, `.html` and `.json` files with prettier
-- `format:styles` - format `.cs` and `.scss` files with stylelint
-- `format` - format all with prettier and stylelint
-- `prepare` - script for setting up husky pre-commit hook
-- `uninstall-husky` - script for removing husky from repository
+const formattedFormula = formatFormula('SUM(A1:A2)')
+```
 
-## Acknowledgment
+## Available methods
 
-If you found it useful somehow, I would be grateful if you could leave a star in the project's GitHub repository.
+### formatFormula
 
-Thank you.
+Formats an excel formula.
+
+Signature:  
+`formatFormula(formula: string, options): string`
+
+- `formula` - The excel formula to format
+- `options` - An optional object with the following properties:
+
+| Name                      | Description                                                                                           | Default                                                                             |
+| ------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| tmplFunctionStart         | Template for the start of a function, the `{{token}}` will contain the name of the function.          | `'{{autoindent}}{{token}}(\n'`                                                      |
+| tmplFunctionStop          | Template for when the end of a function has been reached.                                             | `'\n{{autoindent}}{{token}})'`                                                      |
+| tmplOperandError          | Template for errors.                                                                                  | `' {{token}}'`                                                                      |
+| tmplOperandRange          | Template for ranges and variable names.                                                               | `'{{autoindent}}{{token}}'`                                                         |
+| tmplLogical               | Template for logical operators                                                                        | `'{{token}}{{autolinebreak}}'`                                                      |
+| tmplOperandLogical        | Template for logical operators such as `+ - = ...`                                                    | `'{{autoindent}}{{token}}'`                                                         |
+| tmplOperandNumber         | Template for numbers.                                                                                 | `'{{autoindent}}{{token}}'`                                                         |
+| tmplOperandText           | Template for text/strings.                                                                            | `'{{autoindent}}"{{token}}"'`                                                       |
+| tmplArgument              | Template for argument separators such as `,.`                                                         | `'{{token}}\n'`                                                                     |
+| tmplOperandOperatorInfix  | -                                                                                                     | `' {{token}}{{autolinebreak}}'`                                                     |
+| tmplFunctionStartArray    | Template for the start of an array.                                                                   | `''`                                                                                |
+| tmplFunctionStartArrayRow | Template for the start of an array row.                                                               | `'{'`                                                                               |
+| tmplFunctionStopArrayRow  | Template for the end of an array row.                                                                 | `'}'`                                                                               |
+| tmplFunctionStopArray     | Template for the end of an array.                                                                     | `''`                                                                                |
+| tmplSubexpressionStart    | Template for the sub expression start.                                                                | `'{{autoindent}}(\n'`                                                               |
+| tmplSubexpressionStop     | Template for the sub expression stop.                                                                 | `'\n)'`                                                                             |
+| tmplIndentTab             | Template for the tab char.                                                                            | `'\t'`                                                                              |
+| tmplIndentSpace           | Template for space char.                                                                              | `' '`                                                                               |
+| autoLineBreak             | When rendering line breaks automatically which types should it break on.                              | `'TOK_TYPE_FUNCTION \| TOK_TYPE_ARGUMENT \| TOK_SUBTYPE_LOGICAL \| TOK_TYPE_OP_IN'` |
+| newLine                   | Used for the `{{autolinebreak}}` replacement as well as some string parsing.                          | `'\n'`                                                                              |
+| trim                      | Trim the output.                                                                                      | `true`                                                                              |
+| customTokenRender         | This is a call back to a custom token function.                                                       | `null`                                                                              |
+| prefix                    | Add a prefix to the formula.                                                                          | `''`                                                                                |
+| postfix                   | Add a suffix to the formula.                                                                          | `''`                                                                                |
+| isEu                      | If `true`then `;` is treated as list separator, if `false` then `;` is treated as array row separator | `false`                                                                             |
+
+**Template Values**
+
+- `{{autoindent}}` - apply auto indent based on current tree level
+- `{{token}}` - the named token such as FUNCTION_NAME or "string"
+- `{{autolinebreak}}` - apply line break automatically. tests for next element only at this point
+
+**customTokenRender Example**
+
+```javascript
+function (tokenString, token, indent, lineBreak) {
+  const outStr = token
+  const useTemplate = true
+
+  // In the return object "useTemplate" tells formatFormula()
+  // weather or not to apply the template to what your return from the "tokenString".
+  return { tokenString: outStr, useTemplate }
+}
+```
+
+### formatFormulaHTML
+
+Formats an excel formula into HTML.
+
+Signature:  
+`formatFormulaHTML(formula: string, options): string`
+
+- `formula` - The excel formula to format
+- `options` - An optional object with the following properties (inherits defaults from `formatFormula`):
+
+| Name                      | Description                                                                                  | Default                                                                                                                 |
+| ------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| tmplFunctionStart         | Template for the start of a function, the `{{token}}` will contain the name of the function. | `'{{autoindent}}<span class="function">{{token}}</span><span class="function_start">(</span><br />'`                    |
+| tmplFunctionStop          | Template for when the end of a function has been reached.                                    | `'<br />{{autoindent}}{{token}}<span class="function_stop">)</span>'`                                                   |
+| tmplOperandError          | Template for errors.                                                                         | `' {{token}}'`                                                                                                          |
+| tmplOperandRange          | Template for ranges and variable names.                                                      | `'{{autoindent}}{{token}}'`                                                                                             |
+| tmplLogical               | Template for logical operators                                                               | `'{{token}}{{autolinebreak}}'`                                                                                          |
+| tmplOperandLogical        | Template for logical operators such as `+ - = ...`                                           | `'{{autoindent}}{{token}}'`                                                                                             |
+| tmplOperandNumber         | Template for numbers.                                                                        | `'{{autoindent}}{{token}}'`                                                                                             |
+| tmplOperandText           | Template for text/strings.                                                                   | `'{{autoindent}}<span class="quote_mark">"</span><span class="text">{{token}}</span><span class="quote_mark">"</span>'` |
+| tmplArgument              | Template for argument separators such as `,.`                                                | `'{{token}}<br />'`                                                                                                     |
+| tmplOperandOperatorInfix  | -                                                                                            | `' {{token}}{{autolinebreak}}'`                                                                                         |
+| tmplFunctionStartArray    | Template for the start of an array.                                                          | `''`                                                                                                                    |
+| tmplFunctionStartArrayRow | Template for the start of an array row.                                                      | `'{'`                                                                                                                   |
+| tmplFunctionStopArrayRow  | Template for the end of an array row.                                                        | `'}'`                                                                                                                   |
+| tmplFunctionStopArray     | Template for the end of an array.                                                            | `''`                                                                                                                    |
+| tmplSubexpressionStart    | Template for the sub expression start.                                                       | `'{{autoindent}}('`                                                                                                     |
+| tmplSubexpressionStop     | Template for the sub expression stop.                                                        | `' )'`                                                                                                                  |
+| tmplIndentTab             | Template for the tab char.                                                                   | `'<span class="tabbed">&nbsp;&nbsp;&nbsp;&nbsp;</span>'`                                                                |
+| tmplIndentSpace           | Template for space char.                                                                     | `'&nbsp;'`                                                                                                              |
+| autoLineBreak             | When rendering line breaks automatically which types should it break on.                     | `'TOK_TYPE_FUNCTION \| TOK_TYPE_ARGUMENT \| TOK_SUBTYPE_LOGICAL \| TOK_TYPE_OP_IN '`                                    |
+| newLine                   | Used for the `{{autolinebreak}}` replacement as well as some string parsing.                 | `'<br />'`                                                                                                              |
+| trim                      | Trim the output.                                                                             | `true`                                                                                                                  |
+| customTokenRender         | This is a call back to a custom token function.                                              | Custom function for formatFormulaHTML                                                                                   |
+| prefix                    | Add a prefix to the formula.                                                                 | `'='`                                                                                                                   |
+| postfix                   | Add a suffix to the formula.                                                                 | `''`                                                                                                                    |
+
+### formula2CSharp
+
+Converts an excel formula into C# code.
+
+Signature:  
+`formula2CSharp(formula: string, options): string`
+
+- `formula` - The excel formula to format
+- `options` - An optional object with the following properties (inherits defaults from `formatFormula`):
+
+| Name                      | Description                                                                                  | Default                                                        |
+| ------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| tmplFunctionStart         | Template for the start of a function, the `{{token}}` will contain the name of the function. | `'{{token}}('`                                                 |
+| tmplFunctionStop          | Template for when the end of a function has been reached.                                    | `'{{token}})'`                                                 |
+| tmplOperandError          | Template for errors.                                                                         | `'{{token}}'`                                                  |
+| tmplOperandRange          | Template for ranges and variable names.                                                      | `'{{token}}'`                                                  |
+| tmplOperandLogical        | Template for logical operators such as `+ - = ...`                                           | `'{{token}}'`                                                  |
+| tmplOperandNumber         | Template for numbers.                                                                        | `'{{token}}'`                                                  |
+| tmplOperandText           | Template for text/strings.                                                                   | `'"{{token}}"'`                                                |
+| tmplArgument              | Template for argument separators such as `,.`                                                | `'{{token}}'`                                                  |
+| tmplOperandOperatorInfix  | -                                                                                            | `'{{token}}'`                                                  |
+| tmplFunctionStartArray    | Template for the start of an array.                                                          | `''`                                                           |
+| tmplFunctionStartArrayRow | Template for the start of an array row.                                                      | `'{'`                                                          |
+| tmplFunctionStopArrayRow  | Template for the end of an array row.                                                        | `'}'`                                                          |
+| tmplFunctionStopArray     | Template for the end of an array.                                                            | `''`                                                           |
+| tmplSubexpressionStart    | Template for the sub expression start.                                                       | `'('`                                                          |
+| tmplSubexpressionStop     | Template for the sub expression stop.                                                        | `')'`                                                          |
+| tmplIndentTab             | Template for the tab char.                                                                   | `'\t'`                                                         |
+| tmplIndentSpace           | Template for space char.                                                                     | `' '`                                                          |
+| autoLineBreak             | When rendering line breaks automatically which types should it break on.                     | `'TOK_SUBTYPE_STOP \| TOK_SUBTYPE_START \| TOK_TYPE_ARGUMENT'` |
+| trim                      | Trim the output.                                                                             | `true`                                                         |
+| customTokenRender         | This is a call back to a custom token function.                                              | Custom function for formula2CSharp                             |
+
+### formula2JavaScript
+
+Signature:
+`formula2JavaScript(formula: string, options): string`
+
+- `formula` - The excel formula to format
+- `options` - An optional object with the following properties (inherits options from `formula2CSharp`):
+
+### formula2Python
+
+Signature:
+`formula2Python(formula: string, options): string`
+
+- `formula` - The excel formula to format
+- `options` - An optional object with the following properties (inherits defaults from `formatFormula`):
+
+| Name                      | Description                                                                                  | Default                                                        |
+| ------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| tmplFunctionStart         | Template for the start of a function, the `{{token}}` will contain the name of the function. | `'{{token}}('`                                                 |
+| tmplFunctionStop          | Template for when the end of a function has been reached.                                    | `'{{token}})'`                                                 |
+| tmplOperandError          | Template for errors.                                                                         | `'{{token}}'`                                                  |
+| tmplOperandRange          | Template for ranges and variable names.                                                      | `'{{token}}'`                                                  |
+| tmplOperandLogical        | Template for logical operators such as `+ - = ...`                                           | `'{{token}}'`                                                  |
+| tmplOperandNumber         | Template for numbers.                                                                        | `'{{token}}'`                                                  |
+| tmplOperandText           | Template for text/strings.                                                                   | `'"{{token}}"'`                                                |
+| tmplArgument              | Template for argument separators such as `,.`                                                | `'{{token}}'`                                                  |
+| tmplOperandOperatorInfix  | -                                                                                            | `'{{token}}'`                                                  |
+| tmplFunctionStartArray    | Template for the start of an array.                                                          | `''`                                                           |
+| tmplFunctionStartArrayRow | Template for the start of an array row.                                                      | `'{'`                                                          |
+| tmplFunctionStopArrayRow  | Template for the end of an array row.                                                        | `'}'`                                                          |
+| tmplFunctionStopArray     | Template for the end of an array.                                                            | `''`                                                           |
+| tmplSubexpressionStart    | Template for the sub expression start.                                                       | `'('`                                                          |
+| tmplSubexpressionStop     | Template for the sub expression stop.                                                        | `')'`                                                          |
+| tmplIndentTab             | Template for the tab char.                                                                   | `'\t'`                                                         |
+| tmplIndentSpace           | Template for space char.                                                                     | `' '`                                                          |
+| autoLineBreak             | When rendering line breaks automatically which types should it break on.                     | `'TOK_SUBTYPE_STOP \| TOK_SUBTYPE_START \| TOK_TYPE_ARGUMENT'` |
+| trim                      | Trim the output.                                                                             | `true`                                                         |
+| customTokenRender         | This is a call back to a custom token function.                                              | Custom function for formula2CSharp                             |
+
+### getTokens
+
+Tokenizes an excel formula.
+
+Signature:
+`getTokens(formula: string isEu: boolean): F_token[]`
+
+- `formula` - The excel formula to format
+- `isEu` - If `true`then `;` is treated as list separator, if `false` then `;` is treated as array row separator
+
+Returns an array of tokens, e.g. given the formula `A1+1000` the output would be:
+
+```json
+[
+  {
+    "subtype": "range",
+    "type": "operand",
+    "value": "A1"
+  },
+  {
+    "subtype": "math",
+    "type": "operator-infix",
+    "value": "+"
+  },
+  {
+    "subtype": "number",
+    "type": "operand",
+    "value": "1000"
+  }
+]
+```
