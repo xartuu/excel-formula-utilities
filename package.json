@@ -30,7 +30,7 @@
   "scripts": {
     "dev": "vite --host --mode playground",
     "build:playground": "vite build --mode playground",
-    "build": "vite build --mode modern && vite build --mode legacy",
+    "build": "vite build --mode modern && vite build --mode legacy && pnpm run build:playground",
     "test:unit": "vitest",
     "test:coverage": "vitest --coverage",
     "lint": "eslint \"**/*.{vue,ts,js}\"",
