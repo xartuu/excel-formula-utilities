@@ -42,8 +42,8 @@
                 <input
                   v-model="indentSpaces"
                   type="text"
-                  onkeypress="return /[0-9]/i.test(event.key)"
                   class="w-full border border-gray-300 rounded p-2"
+                  @keypress="isNumber"
                 />
               </div>
             </div>
@@ -77,6 +77,12 @@ const indentSpaces = ref('2')
 
 const sanitize = (str) => {
   return str.replace(/</gi, '&lt;').replace(/>/gi, '&gt;')
+}
+
+const isNumber = (event) => {
+  if (!/\d/.test(event.key) && event.key !== '.') {
+    return event.preventDefault()
+  }
 }
 
 const res = computed(() => {
