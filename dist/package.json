@@ -1,0 +1,56 @@
+{
+  "name": "excel-formula-utilities",
+  "description": "Utilities for formatting Excel formulas.",
+  "author": "Giannis Koutsaftakis",
+  "license": "MIT",
+  "repository": "https://github.com/kouts/excel-formula-utilities",
+  "keywords": [
+    "excel",
+    "formula",
+    "utilities",
+    "formatting",
+    "beautify"
+  ],
+  "version": "0.0.0-semantic-release",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/es/index.js",
+  "browser": "./dist/ExcelFormulaUtilities.umd.js",
+  "unpkg": "dist/ExcelFormulaUtilities.umd.js",
+  "exports": {
+    ".": {
+      "import": "./dist/es/index.js",
+      "require": "./dist/cjs/index.js",
+      "browser": "./dist/ExcelFormulaUtilities.umd.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build --mode modern && vite build --mode legacy",
+    "test:unit": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint \"**/*.{vue,ts,js}\"",
+    "lint-fix": "eslint --fix \"**/*.{vue,ts,js}\"",
+    "prettify": "prettier . --write",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@kouts/eslint-config": "^1.1.0",
+    "@vitest/coverage-v8": "^2.0.5",
+    "eslint": "^9.9.0",
+    "glob": "^11.0.0",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.8",
+    "prettier": "^3.3.3",
+    "vite": "^5.4.0",
+    "vitest": "^2.0.5"
+  },
+  "resolutions": {
+    "@typescript-eslint/utils": "^8.0.0"
+  }
+}
