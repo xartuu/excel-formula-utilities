@@ -75,9 +75,6 @@ export default defineConfig(({ mode }) => {
         },
       },
     ],
-    test: {
-      watch: true,
-    },
   }
 
   const umd = {
@@ -115,5 +112,11 @@ export default defineConfig(({ mode }) => {
 
   if (mode === 'playground') {
     return playground
+  }
+
+  return {
+    test: {
+      watch: true,
+    },
   }
 })
