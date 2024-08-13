@@ -28,7 +28,8 @@
     "dist"
   ],
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite --host --mode playground",
+    "build:playground": "vite build --mode playground",
     "build": "vite build --mode modern && vite build --mode legacy",
     "test:unit": "vitest",
     "test:coverage": "vitest --coverage",

@@ -97,5 +97,23 @@ export default defineConfig(({ mode }) => {
     },
   }
 
-  return mode === 'legacy' ? umd : esm
+  const playground = {
+    root: 'playground',
+    build: {
+      outDir: '../docs',
+      emptyOutDir: true,
+    },
+  }
+
+  if (mode === 'legacy') {
+    return umd
+  }
+
+  if (mode === 'modern') {
+    return esm
+  }
+
+  if (mode === 'playground') {
+    return playground
+  }
 })

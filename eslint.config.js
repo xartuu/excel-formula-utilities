@@ -6,8 +6,12 @@ export default [
     vue: false,
   }),
   {
-    name: 'overrides',
-    ignores: ['.husky', '.history', 'coverage'],
+    // Ignores has to be its own object - https://github.com/eslint/eslint/issues/17400
+    name: 'project-ignores',
+    ignores: ['.husky', '.history', 'coverage', 'docs'],
+  },
+  {
+    name: 'project-overrides',
     rules: {
       'no-unused-vars': 'warn',
       'valid-typeof': 'warn',
