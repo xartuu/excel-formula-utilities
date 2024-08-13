@@ -1,11 +1,22 @@
 {
   "name": "excel-formula-utilities",
-  "private": true,
-  "version": "1.0.0",
+  "description": "Utilities for formatting Excel formulas.",
+  "author": "Giannis Koutsaftakis",
+  "license": "MIT",
+  "repository": "https://github.com/kouts/excel-formula-utilities",
+  "keywords": [
+    "excel",
+    "formula",
+    "utilities",
+    "formatting",
+    "beautify"
+  ],
+  "version": "0.0.0-semantic-release",
   "type": "module",
   "main": "./dist/cjs/index.js",
   "module": "./dist/es/index.js",
   "browser": "./dist/ExcelFormulaUtilities.umd.js",
+  "unpkg": "dist/ExcelFormulaUtilities.umd.js",
   "exports": {
     ".": {
       "import": "./dist/es/index.js",
