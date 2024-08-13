@@ -3,7 +3,7 @@ import { config } from '@kouts/eslint-config'
 export default [
   ...config({
     ts: false,
-    vue: false,
+    vue: true,
   }),
   {
     // Ignores has to be its own object - https://github.com/eslint/eslint/issues/17400
