@@ -11,10 +11,21 @@ npm install excel-formula-utilities
 
 ## Usage
 
+### Module bundler
+
 ```javascript
 import { formatFormula } from 'excel-formula-utilities'
 
 const formattedFormula = formatFormula('SUM(A1:A2)')
+```
+
+### Browser
+
+```html
+<script src="https://unpkg.com/excel-formula-utilities"></script>
+<script>
+  const formattedFormula = ExcelFormulaUtilities.formatFormula('SUM(A1:A2)')
+</script>
 ```
 
 ## Available methods
