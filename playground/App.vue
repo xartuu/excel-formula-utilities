@@ -1,27 +1,37 @@
 <template>
   <div class="h-screen">
-    <div class="container mx-auto">
+    <div class="flex flex-col px-10">
       <div class="mt-4">
         <h1 class="text-2xl font-bold">Excel Formula Utilities Playground</h1>
         <p class="text-lg mt-2">
-          This is a playground for Excel Formula Utilities, a set of functions to beautify and convert Excel formulas to
-          JavaScript, C# and, Python.
+          This is a playground for
+          <a
+            href="https://github.com/kouts/excel-formula-utilities"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="text-emerald-600"
+          >
+            excel-formula-utilities</a
+          >, a set of functions to beautify and convert Excel formulas to JavaScript, C# and, Python.
         </p>
       </div>
-      <div class="mt-4">
-        <div class="grid lg:grid-cols-[40%_20%_40%] grid-cols-1 gap-4">
-          <div>
+      <div class="mt-4 w-full">
+        <div class="grid grid-cols-12 gap-4">
+          <div class="col-span-5">
             <label class="block font-semibold mb-2">Formula</label>
             <textarea
               v-model="formula"
-              class="w-full h-96 border border-gray-300 rounded p-2"
+              class="w-full h-96 border border-gray-300 rounded p-2 outline-none focus:ring-emerald-600 focus:ring-2"
               placeholder="Enter your Excel formula here"
             ></textarea>
           </div>
-          <div>
+          <div class="col-span-2">
             <label class="block font-semibold mb-2">Options</label>
             <div>
-              <select v-model="selectedMode" class="w-full border bg-white border-gray-300 rounded p-2">
+              <select
+                v-model="selectedMode"
+                class="w-full border bg-white border-gray-300 rounded p-2 focus:ring-emerald-600 focus:ring-2"
+              >
                 <option v-for="option in modes" :key="option.value" :value="option.value">{{ option.text }}</option>
               </select>
 
@@ -30,7 +40,7 @@
                   id="default-checkbox"
                   v-model="isEu"
                   type="checkbox"
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                  class="w-4 h-4 border-gray-300 rounded outline-none focus:ring-emerald-600 focus:ring-2"
                 />
                 <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900"> Use ; list as separator </label>
               </div>
@@ -40,18 +50,34 @@
                 <input
                   v-model="indentSpaces"
                   type="text"
-                  class="w-full border border-gray-300 rounded p-2"
+                  class="w-full border border-gray-300 rounded p-2 focus:ring-emerald-600 focus:ring-2 outline-none"
                   @keypress="isNumber"
                 />
               </div>
             </div>
           </div>
-          <div>
+          <div class="col-span-5">
             <label class="block font-semibold mb-2">Result</label>
             <!-- eslint-disable-next-line vue/no-v-html -->
             <div class="border border-gray-300 rounded p-2 h-96 overflow-auto whitespace-nowrap formatted" v-html="res"></div>
           </div>
         </div>
+      </div>
+      <div class="flex justify-center my-8 border-t pt-4">
+        <a
+          href="https://github.com/kouts/excel-formula-utilities"
+          target="_blank"
+          rel="noreferrer noopener"
+          class="inline-flex align-items-center text-decoration-none"
+        >
+          <svg width="24" height="24" viewBox="0 0 16 16" class="mx-2">
+            <path
+              fill-rule="evenodd"
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            ></path>
+          </svg>
+          <div>GitHub</div>
+        </a>
       </div>
     </div>
   </div>
