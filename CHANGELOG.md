@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/kouts/excel-formula-utilities/compare/v1.0.2...v1.0.3) (2024-08-14)
+
+
+### Bug Fixes
+
+* updated docs ([649d771](https://github.com/kouts/excel-formula-utilities/commit/649d771936574ef3c9f6795aea1fd3b41980729c))
+
 ## [1.0.2](https://github.com/kouts/excel-formula-utilities/compare/v1.0.1...v1.0.2) (2024-08-14)
 
 
