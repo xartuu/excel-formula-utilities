@@ -1,7 +1,16 @@
 # excel-formula-utilities
 
-This project is a port of the [excel-formula](https://github.com/joshbtn/excelFormulaUtilitiesJS) library to ES6 without any dependencies.  
-It's a library that can be used to pretty print excel formulas or convert excel formulas into JavaScript, C# or Python code.
+This project is a port of the [excel-formula](https://github.com/joshbtn/excelFormulaUtilitiesJS) library to ES6.  
+It contains a set of functions that can be used to pretty print Excel formulas and convert them into JavaScript, C# or Python code.
+
+**Key Differences from [excel-formula](https://github.com/joshbtn/excelFormulaUtilitiesJS):**
+
+- Removed external dependencies (Bootstrap, jQuery)
+- Removed jQuery methods and replaced them with ES6 equivalents
+- Modularized the library with support for tree-shaking
+- Does not expose a global (window) variable
+- Added `isEu` as an option to the `getTokens`, `formatFormula` and `formatFormulaHTML` methods
+- Provides ES, CJS, and UMD module formats
 
 ## Install
 
