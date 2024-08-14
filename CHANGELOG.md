@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/kouts/excel-formula-utilities/compare/v1.0.3...v1.0.4) (2024-08-14)
+
+
+### Bug Fixes
+
+* updated base for playground ([7b8d32c](https://github.com/kouts/excel-formula-utilities/commit/7b8d32cbcb8de366f3f271ec44ecd9cfd7ea3976))
+
 ## [1.0.3](https://github.com/kouts/excel-formula-utilities/compare/v1.0.2...v1.0.3) (2024-08-14)
 
 
