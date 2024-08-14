@@ -1,6 +1,8 @@
 import { fileURLToPath } from 'node:url'
+import vue from '@vitejs/plugin-vue'
 import * as fs from 'fs/promises'
 import { glob } from 'glob'
+import tailwindcss from 'tailwindcss'
 import { defineConfig } from 'vite'
 import packageJson from './package.json'
 
@@ -95,10 +97,16 @@ export default defineConfig(({ mode }) => {
   }
 
   const playground = {
+    plugins: [vue()],
     root: 'playground',
     build: {
       outDir: '../docs',
       emptyOutDir: true,
+    },
+    css: {
+      postcss: {
+        plugins: [tailwindcss()],
+      },
     },
   }
 

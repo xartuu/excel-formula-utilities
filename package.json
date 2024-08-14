@@ -30,7 +30,7 @@
   "scripts": {
     "dev": "vite --host --mode playground",
     "build:playground": "vite build --mode playground",
-    "build": "vite build --mode modern && vite build --mode legacy",
+    "build": "vite build --mode modern && vite build --mode legacy && pnpm run build:playground",
     "test:unit": "vitest",
     "test:coverage": "vitest --coverage",
     "lint": "eslint \"**/*.{vue,ts,js}\"",
@@ -42,14 +42,19 @@
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@kouts/eslint-config": "^1.1.0",
+    "@vitejs/plugin-vue": "^5.1.2",
     "@vitest/coverage-v8": "^2.0.5",
+    "autoprefixer": "^10.4.20",
     "eslint": "^9.9.0",
     "glob": "^11.0.0",
     "husky": "^9.1.4",
     "lint-staged": "^15.2.8",
+    "postcss": "^8.4.41",
     "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.9",
     "vite": "^5.4.0",
-    "vitest": "^2.0.5"
+    "vitest": "^2.0.5",
+    "vue": "^3.4.37"
   },
   "resolutions": {
     "@typescript-eslint/utils": "^8.0.0"
