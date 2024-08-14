@@ -99,6 +99,7 @@ export default defineConfig(({ mode }) => {
   const playground = {
     plugins: [vue()],
     root: 'playground',
+    base: `/${packageJson.name}/`,
     build: {
       outDir: '../docs',
       emptyOutDir: true,
