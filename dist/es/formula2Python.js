@@ -91,6 +91,7 @@ const formula2Python = function(formula, options) {
               break;
             }
             switch (currentFunctionOnStack.name.toLowerCase()) {
+              // If in the sum function break out cell names and add
               case "sum":
                 if (RegExp(":", "gi").test(tokenString)) {
                   outStr = breakOutRanges(tokenString, "+");
@@ -112,6 +113,7 @@ const formula2Python = function(formula, options) {
                   outStr = tokenString;
                 }
                 break;
+              // By Default return an array containing all cell names in array
               default:
                 if (RegExp(":", "gi").test(tokenString)) {
                   outStr = "[" + breakOutRanges(tokenString, ",") + "]";
