@@ -96,8 +96,8 @@ const modes = [
 ]
 const formula = ref('=IF(SUM( IF(FOO = BAR, 10, 0), 10 ) = 20 , "FOO", "BAR")')
 const selectedMode = ref('beautify')
-const isEu = ref(false)
-const indentSpaces = ref('2')
+const isEu = ref(true)
+const indentSpaces = ref('4')
 
 const sanitize = (str) => {
   return str.replace(/</gi, '&lt;').replace(/>/gi, '&gt;')
